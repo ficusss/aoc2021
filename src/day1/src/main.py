@@ -16,7 +16,7 @@ def main():
     print('Count dives (window=3) is %s' % count_dives)
 
 
-def find_count_dives_by_window(measurements: list, window: int = 1) -> int:
+def find_count_dives_by_window(measurements: list[int], window: int = 1) -> int:
     count_dives = 0
 
     measurements_in_window = deque(measurements[:window], maxlen=window)
