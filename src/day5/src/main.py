@@ -58,26 +58,27 @@ def create_full_map(vectors: list[vector_type], x_max: int, y_max: int) -> np.nd
     map = np.zeros((y_max+1, x_max+1))
     
     for p1, p2 in vectors:
-        x_min, x_max = min(p1[0], p2[0]), max(p1[0], p2[0])
-        y_min, y_max = min(p1[1], p2[1]), max(p1[1], p2[1])
 
-        if p1[0] != p2[0] and p1[1] != p2[1]:
-            p1, p2 = complex(*p1), complex(*p2)
-            p_diff = p2 - p1
-            x1, x2, x_step = int(p1.real), int(p2.real), int(np.sign(p_diff.real))
-            y1, y2, y_step = int(p1.imag), int(p2.imag), int(np.sign(p_diff.imag))
-            points = list(zip(range(x1, x2+x_step, x_step), range(y1, y2+y_step, y_step)))
-            for icol, irow in points:
-                map[irow, icol] += 1
-            continue
+        p1, p2 = complex(*p1), complex(*p2)
+        p_diff = p2 - p1
+        x1, x2, x_step = int(p1.real), int(p2.real), int(np.sign(p_diff.real))
+        y1, y2, y_step = int(p1.imag), int(p2.imag), int(np.sign(p_diff.imag))
 
-        if x_min != x_max:
-            for icol in range(x_min, x_max+1):
-                map[p1[1], icol] += 1
+        if x1 != x2 and y1 != y2:
+            xp = range(x1, x2+x_step, x_step)
+            yp = range(y1, y2+y_step, y_step)
+        elif x1 != x2:
+            xp = range(x1, x2+x_step, x_step)
+            yp = [y1] * (np.abs(x1 - x2) + 1)
+        elif y1 != y2:
+            xp = [x1] * (np.abs(y1 - y2)+1)
+            yp = range(y1, y2+y_step, y_step)
+        else:
+            xp, yp = [x1], [y1]
 
-        if y_min != y_max:
-            for irow in range(y_min, y_max+1):
-                map[irow, p1[0]] += 1
+        points = list(zip(xp, yp))
+        for icol, irow in points:
+            map[irow, icol] += 1
     
     return map
     
