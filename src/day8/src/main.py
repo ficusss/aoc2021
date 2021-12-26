@@ -4,8 +4,6 @@ import sys
 
 TInputLine = tuple[tuple[str, str, str, str, str, str, str, str, str, str], tuple[str, str, str, str]]
 
-INPUT_VARIANCE = ('a', 'b', 'c', 'd', 'e', 'f', 'g')
-
 
 def main():
     encryptions  = parse_input_data(sys.argv[1])
